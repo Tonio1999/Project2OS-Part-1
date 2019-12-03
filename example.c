@@ -14,14 +14,11 @@ int main(int argc, char **argv)
   int fd, i,count=0,nloop=10,zero=0,*counter_ptr;
   sem_t *mutex;
 
-  //open a file and map it into memory this is to hold the shared counter
-
   fd = open("log.txt",O_RDWR|O_CREAT,S_IRWXU);
   write(fd,&zero,sizeof(int));
   counter_ptr = mmap(NULL,sizeof(int),PROT_READ |PROT_WRITE,MAP_SHARED,fd,0);
   close(fd);
-
-  /* create, initialize semaphore */
+  
  if ((mutex = sem_open("examplesemaphore", O_CREAT, 0644, 1)) == SEM_FAILED) 
  {
     perror("semaphore initilization");
