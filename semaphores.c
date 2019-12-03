@@ -1,15 +1,3 @@
-/*------------------------------------------------------*/
-/* Skeleton for the synchronization Lab .   assignment 	*/
-/*------------------------------------------------------*/
-/* Note:						                        */
-/* -----						                        */
-/* 1. E = Elephant					                    */
-/* 2. D = Dog						                    */
-/* 3. C = Cat					                    	*/
-/* 4. M = Mouse						                    */
-/* 5. P = Parrot					                    */
-/*------------------------------------------------------*/
-
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -19,24 +7,22 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define  CHILD		0       /* Return value of child proc from fork call */
+#define  CHILD		0      
 
 int main()
 {
-    sem_t * elephant_mice;   /* semaphore to keep Elephants and Mice separate */
-    sem_t * dog_cats;        /* semaphore to keep Dog and Cat separate  */
-    sem_t * cat_parrots;     /* semaphore to keep Cat and Parrot separate  */
-    sem_t * mouse_parrots;   /* semaphore to keep Mouse and Parrot separate  */
-    sem_t * cat_mice;        /* semaphore to keep Cat and Mice separate  */
+    sem_t * elephant_mice;   
+    sem_t * dog_cats;       
+    sem_t * cat_parrots; 
+    sem_t * mouse_parrots; 
+    sem_t * cat_mice;        
   
-    int pid;		/* Process id after fork call */
-    int i;		/* Loop index. */
-    int N;		/* Number of requests to process */
-    int status;  	/* Exit status of child process. */
-    int type;           /* Type of animal */
+    int pid;	
+    int i;		
+    int N;		
+    int status;  
+    int type;           
 
-
-    /*   Initialization of the semaphores   */
     if ((elephant_mice = sem_open("/elephant_mice_sem", O_CREAT, 0644, 1)) == SEM_FAILED) 
     {
       perror("Failed to open/initialize semphore for elephant_mice.");
@@ -77,7 +63,6 @@ int main()
         scanf("%d",&type);
         if ((pid = fork()) == -1) 
         {
-   	        /* Fork failed! */
 	        perror("fork");
 	        exit(1);
         }
@@ -87,7 +72,7 @@ int main()
           pid = getpid();
           switch (type) 
           {
-            case 1: /* Elephant code*/
+            case 1: 
                         printf("     Elephant process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(elephant_mice);
@@ -99,7 +84,7 @@ int main()
                         sem_post(elephant_mice);
                         break;
 
-            case 2:  /*Dog code*/
+            case 2:  
                         printf("     Dog process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(dog_cats);
@@ -111,7 +96,7 @@ int main()
                         sem_post(dog_cats);
                         break;
 
-            case 3: /*Cat Code*/
+            case 3: 
                         printf("     Cat process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(dog_cats);
@@ -127,7 +112,7 @@ int main()
                         sem_post(cat_mice);
                         break;
 
-            case 4: /*Mouse code*/
+            case 4: 
                         printf("     Mouse process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(mouse_parrots);
@@ -143,7 +128,7 @@ int main()
                         sem_post(cat_mice);
                         break;
 
-            case 5: /*Parrot  Code*/
+            case 5: 
                         printf("     Parrot process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(mouse_parrots);
@@ -161,7 +146,6 @@ int main()
        }
     }
     
-    /* Now wait for the child processes to finish */
     for (i=1; i<=N; i++) 
     {
         pid = wait(&status);
