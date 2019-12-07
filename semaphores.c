@@ -13,15 +13,16 @@ int main()
 {
     sem_t * elephant_mice;   
     sem_t * dog_cats;       
-    sem_t * cat_parrots; 
-    sem_t * mouse_parrots; 
-    sem_t * cat_mice;        
+    sem_t * cat_parrots;    
+    sem_t * mouse_parrots;  
+    sem_t * cat_mice;      
   
     int pid;	
     int i;		
     int N;		
-    int status;  
+    int status;  	
     int type;           
+
 
     if ((elephant_mice = sem_open("/elephant_mice_sem", O_CREAT, 0644, 1)) == SEM_FAILED) 
     {
@@ -63,6 +64,7 @@ int main()
         scanf("%d",&type);
         if ((pid = fork()) == -1) 
         {
+   	        /* Fork failed! */
 	        perror("fork");
 	        exit(1);
         }
@@ -72,6 +74,7 @@ int main()
           pid = getpid();
           switch (type) 
           {
+
             case 1: 
                         printf("     Elephant process with pid %d wants in.\n",pid);
                         fflush(stdout);
@@ -96,7 +99,7 @@ int main()
                         sem_post(dog_cats);
                         break;
 
-            case 3: 
+            case 3:
                         printf("     Cat process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(dog_cats);
@@ -128,7 +131,7 @@ int main()
                         sem_post(cat_mice);
                         break;
 
-            case 5: 
+            case 5:
                         printf("     Parrot process with pid %d wants in.\n",pid);
                         fflush(stdout);
                         sem_wait(mouse_parrots);
